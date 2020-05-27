@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="dd455ced71bc4ccab42fdbefd20a6e52" Name="Diagram1">
+        <EntityTypeShape EntityType="StadioDBModel.abbonamento" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="StadioDBModel.biglietto" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StadioDBModel.evento" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StadioDBModel.posto" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="StadioDBModel.staff" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StadioDBModel.TipologiaEvento" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="StadioDBModel.FK__abbonamen__idTip__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="StadioDBModel.FK__posto__abbonamen__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="StadioDBModel.FK__biglietto__idEve__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="StadioDBModel.FK__biglietto__idTip__7D439ABD" ManuallyRouted="false" />
+        <AssociationConnector Association="StadioDBModel.FK__evento__idTipolo__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="StadioDBModel.FK__posto__evento__778AC167" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="StadioDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="abbonamento">
+          <Key>
+            <PropertyRef Name="idAbbonamento" />
+          </Key>
+          <Property Name="idAbbonamento" Type="int" Nullable="false" />
+          <Property Name="costo" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CF" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="anno" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="idTipologia" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="biglietto">
+          <Key>
+            <PropertyRef Name="idBiglietto" />
+          </Key>
+          <Property Name="idBiglietto" Type="int" Nullable="false" />
+          <Property Name="prezzo" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="dataBiglietto" Type="date" Nullable="false" />
+          <Property Name="idEvento" Type="int" Nullable="false" />
+          <Property Name="idTipologia" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="evento">
+          <Key>
+            <PropertyRef Name="idEvento" />
+          </Key>
+          <Property Name="idEvento" Type="int" Nullable="false" />
+          <Property Name="postiDisponibili" Type="int" Nullable="false" />
+          <Property Name="abbonamentiDisponibili" Type="int" Nullable="false" />
+          <Property Name="nomeEvento" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="dataEvento" Type="date" Nullable="false" />
+          <Property Name="idTipologia" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="posto">
+          <Key>
+            <PropertyRef Name="idPosto" />
+          </Key>
+          <Property Name="idPosto" Type="int" Nullable="false" />
+          <Property Name="numeroPosto" Type="int" Nullable="false" />
+          <Property Name="nomeSettore" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="nomeAnello" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="isDisponibile" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="evento" Type="int" />
+          <Property Name="abbonamento" Type="int" />
+        </EntityType>
+        <EntityType Name="staff">
+          <Key>
+            <PropertyRef Name="CF" />
+          </Key>
+          <Property Name="nomeUtente" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="autPassword" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="ruolo" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="cognome" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CF" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="eta" Type="int" Nullable="false" />
+          <Property Name="sesso" Type="varchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipologiaEvento">
+          <Key>
+            <PropertyRef Name="idTipologia" />
+          </Key>
+          <Property Name="idTipologia" Type="int" Nullable="false" />
+          <Property Name="TipoEvento" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__abbonamen__idTip__74AE54BC">
+          <End Role="TipologiaEvento" Type="Self.TipologiaEvento" Multiplicity="1" />
+          <End Role="abbonamento" Type="Self.abbonamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipologiaEvento">
+              <PropertyRef Name="idTipologia" />
+            </Principal>
+            <Dependent Role="abbonamento">
+              <PropertyRef Name="idTipologia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__biglietto__idEve__7C4F7684">
+          <End Role="evento" Type="Self.evento" Multiplicity="1" />
+          <End Role="biglietto" Type="Self.biglietto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="evento">
+              <PropertyRef Name="idEvento" />
+            </Principal>
+            <Dependent Role="biglietto">
+              <PropertyRef Name="idEvento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__biglietto__idTip__7D439ABD">
+          <End Role="TipologiaEvento" Type="Self.TipologiaEvento" Multiplicity="1" />
+          <End Role="biglietto" Type="Self.biglietto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipologiaEvento">
+              <PropertyRef Name="idTipologia" />
+            </Principal>
+            <Dependent Role="biglietto">
+              <PropertyRef Name="idTipologia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__evento__idTipolo__70DDC3D8">
+          <End Role="TipologiaEvento" Type="Self.TipologiaEvento" Multiplicity="1" />
+          <End Role="evento" Type="Self.evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipologiaEvento">
+              <PropertyRef Name="idTipologia" />
+            </Principal>
+            <Dependent Role="evento">
+              <PropertyRef Name="idTipologia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__posto__abbonamen__787EE5A0">
+          <End Role="abbonamento" Type="Self.abbonamento" Multiplicity="0..1" />
+          <End Role="posto" Type="Self.posto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="abbonamento">
+              <PropertyRef Name="idAbbonamento" />
+            </Principal>
+            <Dependent Role="posto">
+              <PropertyRef Name="abbonamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__posto__evento__778AC167">
+          <End Role="evento" Type="Self.evento" Multiplicity="0..1" />
+          <End Role="posto" Type="Self.posto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="evento">
+              <PropertyRef Name="idEvento" />
+            </Principal>
+            <Dependent Role="posto">
+              <PropertyRef Name="evento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StadioDBModelStoreContainer">
+          <EntitySet Name="abbonamento" EntityType="Self.abbonamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="biglietto" EntityType="Self.biglietto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="evento" EntityType="Self.evento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="posto" EntityType="Self.posto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="staff" EntityType="Self.staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipologiaEvento" EntityType="Self.TipologiaEvento" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__abbonamen__idTip__74AE54BC" Association="Self.FK__abbonamen__idTip__74AE54BC">
+            <End Role="TipologiaEvento" EntitySet="TipologiaEvento" />
+            <End Role="abbonamento" EntitySet="abbonamento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__biglietto__idEve__7C4F7684" Association="Self.FK__biglietto__idEve__7C4F7684">
+            <End Role="evento" EntitySet="evento" />
+            <End Role="biglietto" EntitySet="biglietto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__biglietto__idTip__7D439ABD" Association="Self.FK__biglietto__idTip__7D439ABD">
+            <End Role="TipologiaEvento" EntitySet="TipologiaEvento" />
+            <End Role="biglietto" EntitySet="biglietto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__evento__idTipolo__70DDC3D8" Association="Self.FK__evento__idTipolo__70DDC3D8">
+            <End Role="TipologiaEvento" EntitySet="TipologiaEvento" />
+            <End Role="evento" EntitySet="evento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__posto__abbonamen__787EE5A0" Association="Self.FK__posto__abbonamen__787EE5A0">
+            <End Role="abbonamento" EntitySet="abbonamento" />
+            <End Role="posto" EntitySet="posto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__posto__evento__778AC167" Association="Self.FK__posto__evento__778AC167">
+            <End Role="evento" EntitySet="evento" />
+            <End Role="posto" EntitySet="posto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StadioDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="abbonamento">
+          <Key>
+            <PropertyRef Name="idAbbonamento" />
+          </Key>
+          <Property Name="idAbbonamento" Type="Int32" Nullable="false" />
+          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CF" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="anno" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idTipologia" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TipologiaEvento" Relationship="Self.FK__abbonamen__idTip__74AE54BC" FromRole="abbonamento" ToRole="TipologiaEvento" />
+          <NavigationProperty Name="posto" Relationship="Self.FK__posto__abbonamen__787EE5A0" FromRole="abbonamento" ToRole="posto" />
+        </EntityType>
+        <EntityType Name="biglietto">
+          <Key>
+            <PropertyRef Name="idBiglietto" />
+          </Key>
+          <Property Name="idBiglietto" Type="Int32" Nullable="false" />
+          <Property Name="prezzo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="dataBiglietto" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="idEvento" Type="Int32" Nullable="false" />
+          <Property Name="idTipologia" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="evento" Relationship="Self.FK__biglietto__idEve__7C4F7684" FromRole="biglietto" ToRole="evento" />
+          <NavigationProperty Name="TipologiaEvento" Relationship="Self.FK__biglietto__idTip__7D439ABD" FromRole="biglietto" ToRole="TipologiaEvento" />
+        </EntityType>
+        <EntityType Name="evento">
+          <Key>
+            <PropertyRef Name="idEvento" />
+          </Key>
+          <Property Name="idEvento" Type="Int32" Nullable="false" />
+          <Property Name="postiDisponibili" Type="Int32" Nullable="false" />
+          <Property Name="abbonamentiDisponibili" Type="Int32" Nullable="false" />
+          <Property Name="nomeEvento" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dataEvento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="idTipologia" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="biglietto" Relationship="Self.FK__biglietto__idEve__7C4F7684" FromRole="evento" ToRole="biglietto" />
+          <NavigationProperty Name="TipologiaEvento" Relationship="Self.FK__evento__idTipolo__70DDC3D8" FromRole="evento" ToRole="TipologiaEvento" />
+          <NavigationProperty Name="posto" Relationship="Self.FK__posto__evento__778AC167" FromRole="evento" ToRole="posto" />
+        </EntityType>
+        <EntityType Name="posto">
+          <Key>
+            <PropertyRef Name="idPosto" />
+          </Key>
+          <Property Name="idPosto" Type="Int32" Nullable="false" />
+          <Property Name="numeroPosto" Type="Int32" Nullable="false" />
+          <Property Name="nomeSettore" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nomeAnello" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isDisponibile" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="evento" Type="Int32" />
+          <Property Name="abbonamento" Type="Int32" />
+          <NavigationProperty Name="abbonamento1" Relationship="Self.FK__posto__abbonamen__787EE5A0" FromRole="posto" ToRole="abbonamento" />
+          <NavigationProperty Name="evento1" Relationship="Self.FK__posto__evento__778AC167" FromRole="posto" ToRole="evento" />
+        </EntityType>
+        <EntityType Name="staff">
+          <Key>
+            <PropertyRef Name="CF" />
+          </Key>
+          <Property Name="nomeUtente" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="autPassword" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ruolo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cognome" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CF" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="eta" Type="Int32" Nullable="false" />
+          <Property Name="sesso" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipologiaEvento">
+          <Key>
+            <PropertyRef Name="idTipologia" />
+          </Key>
+          <Property Name="idTipologia" Type="Int32" Nullable="false" />
+          <Property Name="TipoEvento" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="abbonamento" Relationship="Self.FK__abbonamen__idTip__74AE54BC" FromRole="TipologiaEvento" ToRole="abbonamento" />
+          <NavigationProperty Name="biglietto" Relationship="Self.FK__biglietto__idTip__7D439ABD" FromRole="TipologiaEvento" ToRole="biglietto" />
+          <NavigationProperty Name="evento" Relationship="Self.FK__evento__idTipolo__70DDC3D8" FromRole="TipologiaEvento" ToRole="evento" />
+        </EntityType>
+        <Association Name="FK__abbonamen__idTip__74AE54BC">
+          <End Role="TipologiaEvento" Type="Self.TipologiaEvento" Multiplicity="1" />
+          <End Role="abbonamento" Type="Self.abbonamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipologiaEvento">
+              <PropertyRef Name="idTipologia" />
+            </Principal>
+            <Dependent Role="abbonamento">
+              <PropertyRef Name="idTipologia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__posto__abbonamen__787EE5A0">
+          <End Role="abbonamento" Type="Self.abbonamento" Multiplicity="0..1" />
+          <End Role="posto" Type="Self.posto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="abbonamento">
+              <PropertyRef Name="idAbbonamento" />
+            </Principal>
+            <Dependent Role="posto">
+              <PropertyRef Name="abbonamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__biglietto__idEve__7C4F7684">
+          <End Role="evento" Type="Self.evento" Multiplicity="1" />
+          <End Role="biglietto" Type="Self.biglietto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="evento">
+              <PropertyRef Name="idEvento" />
+            </Principal>
+            <Dependent Role="biglietto">
+              <PropertyRef Name="idEvento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__biglietto__idTip__7D439ABD">
+          <End Role="TipologiaEvento" Type="Self.TipologiaEvento" Multiplicity="1" />
+          <End Role="biglietto" Type="Self.biglietto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipologiaEvento">
+              <PropertyRef Name="idTipologia" />
+            </Principal>
+            <Dependent Role="biglietto">
+              <PropertyRef Name="idTipologia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__evento__idTipolo__70DDC3D8">
+          <End Role="TipologiaEvento" Type="Self.TipologiaEvento" Multiplicity="1" />
+          <End Role="evento" Type="Self.evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipologiaEvento">
+              <PropertyRef Name="idTipologia" />
+            </Principal>
+            <Dependent Role="evento">
+              <PropertyRef Name="idTipologia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__posto__evento__778AC167">
+          <End Role="evento" Type="Self.evento" Multiplicity="0..1" />
+          <End Role="posto" Type="Self.posto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="evento">
+              <PropertyRef Name="idEvento" />
+            </Principal>
+            <Dependent Role="posto">
+              <PropertyRef Name="evento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StadioDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="abbonamento" EntityType="Self.abbonamento" />
+          <EntitySet Name="biglietto" EntityType="Self.biglietto" />
+          <EntitySet Name="evento" EntityType="Self.evento" />
+          <EntitySet Name="posto" EntityType="Self.posto" />
+          <EntitySet Name="staff" EntityType="Self.staff" />
+          <EntitySet Name="TipologiaEvento" EntityType="Self.TipologiaEvento" />
+          <AssociationSet Name="FK__abbonamen__idTip__74AE54BC" Association="Self.FK__abbonamen__idTip__74AE54BC">
+            <End Role="TipologiaEvento" EntitySet="TipologiaEvento" />
+            <End Role="abbonamento" EntitySet="abbonamento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__posto__abbonamen__787EE5A0" Association="Self.FK__posto__abbonamen__787EE5A0">
+            <End Role="abbonamento" EntitySet="abbonamento" />
+            <End Role="posto" EntitySet="posto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__biglietto__idEve__7C4F7684" Association="Self.FK__biglietto__idEve__7C4F7684">
+            <End Role="evento" EntitySet="evento" />
+            <End Role="biglietto" EntitySet="biglietto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__biglietto__idTip__7D439ABD" Association="Self.FK__biglietto__idTip__7D439ABD">
+            <End Role="TipologiaEvento" EntitySet="TipologiaEvento" />
+            <End Role="biglietto" EntitySet="biglietto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__evento__idTipolo__70DDC3D8" Association="Self.FK__evento__idTipolo__70DDC3D8">
+            <End Role="TipologiaEvento" EntitySet="TipologiaEvento" />
+            <End Role="evento" EntitySet="evento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__posto__evento__778AC167" Association="Self.FK__posto__evento__778AC167">
+            <End Role="evento" EntitySet="evento" />
+            <End Role="posto" EntitySet="posto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StadioDBModelStoreContainer" CdmEntityContainer="StadioDBEntities">
+          <EntitySetMapping Name="abbonamento">
+            <EntityTypeMapping TypeName="StadioDBModel.abbonamento">
+              <MappingFragment StoreEntitySet="abbonamento">
+                <ScalarProperty Name="idAbbonamento" ColumnName="idAbbonamento" />
+                <ScalarProperty Name="costo" ColumnName="costo" />
+                <ScalarProperty Name="CF" ColumnName="CF" />
+                <ScalarProperty Name="anno" ColumnName="anno" />
+                <ScalarProperty Name="idTipologia" ColumnName="idTipologia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="biglietto">
+            <EntityTypeMapping TypeName="StadioDBModel.biglietto">
+              <MappingFragment StoreEntitySet="biglietto">
+                <ScalarProperty Name="idBiglietto" ColumnName="idBiglietto" />
+                <ScalarProperty Name="prezzo" ColumnName="prezzo" />
+                <ScalarProperty Name="dataBiglietto" ColumnName="dataBiglietto" />
+                <ScalarProperty Name="idEvento" ColumnName="idEvento" />
+                <ScalarProperty Name="idTipologia" ColumnName="idTipologia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="evento">
+            <EntityTypeMapping TypeName="StadioDBModel.evento">
+              <MappingFragment StoreEntitySet="evento">
+                <ScalarProperty Name="idEvento" ColumnName="idEvento" />
+                <ScalarProperty Name="postiDisponibili" ColumnName="postiDisponibili" />
+                <ScalarProperty Name="abbonamentiDisponibili" ColumnName="abbonamentiDisponibili" />
+                <ScalarProperty Name="nomeEvento" ColumnName="nomeEvento" />
+                <ScalarProperty Name="dataEvento" ColumnName="dataEvento" />
+                <ScalarProperty Name="idTipologia" ColumnName="idTipologia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="posto">
+            <EntityTypeMapping TypeName="StadioDBModel.posto">
+              <MappingFragment StoreEntitySet="posto">
+                <ScalarProperty Name="idPosto" ColumnName="idPosto" />
+                <ScalarProperty Name="numeroPosto" ColumnName="numeroPosto" />
+                <ScalarProperty Name="nomeSettore" ColumnName="nomeSettore" />
+                <ScalarProperty Name="nomeAnello" ColumnName="nomeAnello" />
+                <ScalarProperty Name="isDisponibile" ColumnName="isDisponibile" />
+                <ScalarProperty Name="evento" ColumnName="evento" />
+                <ScalarProperty Name="abbonamento" ColumnName="abbonamento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="staff">
+            <EntityTypeMapping TypeName="StadioDBModel.staff">
+              <MappingFragment StoreEntitySet="staff">
+                <ScalarProperty Name="nomeUtente" ColumnName="nomeUtente" />
+                <ScalarProperty Name="autPassword" ColumnName="autPassword" />
+                <ScalarProperty Name="ruolo" ColumnName="ruolo" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="cognome" ColumnName="cognome" />
+                <ScalarProperty Name="CF" ColumnName="CF" />
+                <ScalarProperty Name="eta" ColumnName="eta" />
+                <ScalarProperty Name="sesso" ColumnName="sesso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipologiaEvento">
+            <EntityTypeMapping TypeName="StadioDBModel.TipologiaEvento">
+              <MappingFragment StoreEntitySet="TipologiaEvento">
+                <ScalarProperty Name="idTipologia" ColumnName="idTipologia" />
+                <ScalarProperty Name="TipoEvento" ColumnName="TipoEvento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Nessuno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
